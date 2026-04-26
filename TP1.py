@@ -56,8 +56,13 @@ def mcd(a, b):
     return mcd(b, a % b)
 
 #Ejercicio 13
+# Versión recursiva
 def mcm(a, b):
-    return (a * b) // mcd(a, b)
+    if a == b:
+        return a
+    if a > b:
+        return mcm(a - b, b)
+    return mcm(a, b - a)
 
 #Ejercicio 14
 def suma_digitos(n):
@@ -124,8 +129,8 @@ def busqueda_binaria(lista, x, ini, fin):
 #Ejercicio 22
 def usar_la_fuerza(mochila, i=0):
     if i >= len(mochila):
-        return False, i
+        return False, -1  # -1 indica "no encontrado"
     if mochila[i] == "sable de luz":
-        return True, i+1
+        return True, i    
     return usar_la_fuerza(mochila, i+1)
 
