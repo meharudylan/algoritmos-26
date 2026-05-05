@@ -29,7 +29,7 @@ def volver_a_origen():
         opuesta = OPUESTOS[direccion]
         print(f"{pasos} paso(s) al {opuesta}")
 
-#Ejercicio 22
+#Ejercicio 24
 # Pila de personajes MCU
 # Cada elemento es una tupla (nombre, peliculas)
 # El último elemento es la CIMA de la pila
