@@ -14,7 +14,7 @@ def eliminar_facebook(cola):
             eliminadas += 1
         else:
             aux.append(notif)
-    # restauramos la cola sin las de Facebook
+            
     for notif in aux:
         cola.append(notif)
     return eliminadas
@@ -31,7 +31,7 @@ def mostrar_twitter_python(cola):
         if app == "Twitter" and "Python" in mensaje:
             encontradas.append(notif)
         aux.append(notif)
-    # restauramos la cola completa
+
     for notif in aux:
         cola.append(notif)
     return encontradas
@@ -48,7 +48,7 @@ def notificaciones_en_rango(cola, hora_inicio, hora_fin):
         if hora >= hora_inicio and hora <= hora_fin:
             pila.append(notif)
         aux.append(notif)
-    # restauramos la cola
+    
     for notif in aux:
         cola.append(notif)
     return pila
