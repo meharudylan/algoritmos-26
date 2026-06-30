@@ -2,49 +2,49 @@
 # funcion recursiva  para buscar, determinar si Capitan America esta en la lista.
 # funcion recursiva para listar los superheroes de la lista.
 
-# from list_ import List
+from list_ import List
 
 
-# superheroes = [
-#     "Hulk", "Ironman", "Spiderman", "CapitanAmerica", "Thanos",
-#     "Thor", "Wolverine", "Daredevil", "Punisher", "Loki",
-#     "Nova", "Groot", "Pantera Negra", "She Hulk", "Gamora"
-# ]
+superheroes = [
+    "Hulk", "Ironman", "Spiderman", "CapitanAmerica", "Thanos",
+    "Thor", "Wolverine", "Daredevil", "Punisher", "Loki",
+    "Nova", "Groot", "Pantera Negra", "She Hulk", "Gamora"
+]
 
 
-# def busqueda_recursiva(superheroes, CapitanAmerica :str, i=0):
+def busqueda_recursiva(superheroes, CapitanAmerica :str, i=0):
     
-#     if i == len(superheroes):  
-#         return -1
-#     if superheroes[i] == CapitanAmerica:  
-#         return i
-#     return busqueda_recursiva(superheroes, CapitanAmerica, i + 1)  
+    if i == len(superheroes):  
+        return -1
+    if superheroes[i] == CapitanAmerica:  
+        return i
+    return busqueda_recursiva(superheroes, CapitanAmerica, i + 1)  
 
-# def listar_superheroes(superheroes, i=0):
+def listar_superheroes(superheroes, i=0):
    
-#     if i == len(superheroes): 
-#         return
-#     print(f"{i}: {superheroes[i]}")
-#     listar_superheroes(superheroes, i + 1) 
+    if i == len(superheroes): 
+        return
+    print(f"{i}: {superheroes[i]}")
+    listar_superheroes(superheroes, i + 1) 
 
 
 
-# print()
-# nombre_buscado = "CapitanAmerica"
-# posicion = busqueda_recursiva(superheroes, nombre_buscado)
+print()
+nombre_buscado = "CapitanAmerica"
+posicion = busqueda_recursiva(superheroes, nombre_buscado)
 
-# if posicion != -1:
-#     print(f'"{nombre_buscado}" encontrado en la posición {posicion}')
-# else:
-#     print(f'"{nombre_buscado}" no está en la lista')
+if posicion != -1:
+    print(f'"{nombre_buscado}" encontrado en la posición {posicion}')
+else:
+    print(f'"{nombre_buscado}" no está en la lista')
 
-# print()
-# print("Listado completo:")
-# listar_superheroes(superheroes)
+print()
+print("Listado completo:")
+listar_superheroes(superheroes)
 
 
 #Ejercicio 2
-# Ejercicio 2: Dada una lista de personajes de marvel (usar el archivo adjunto) debe tener 100 o mas, resolver:
+#Dada una lista de personajes de marvel (usar el archivo adjunto) debe tener 100 o mas, resolver:
 # Listado ordenado de manera ascendente por nombre de los personajes.
 # Determinar en que posicion esta The Thing y Rocket Raccoon.
 # Listar todos los villanos de la lista.
@@ -76,13 +76,9 @@ class Personaje:
         tipo = "Villano" if self.villano else "Héroe"
         return f"{self.nom} ({self.nom_real}) | {tipo} | {self.aparicion}"
 
-
-
 lista = List()
 for h in superheroes:
     lista.append(Personaje(h))
-
-
 
 # 1. Listado ordenado por nombre ascendente
 print("1. ORDENADO POR NOMBRE")
@@ -136,7 +132,7 @@ print()
 
 # 6. Ordenado por nombre real ascendente
 
-print("\n=== 6. ORDENADO POR NOMBRE REAL ===")
+print("6. ORDENADO POR NOMBRE REAL")
 lista.sort(key=lambda x: x.nom_real)
 lista.show()
 
@@ -144,7 +140,7 @@ print()
 
 # 7. Ordenado por fecha de aparición
 
-print("\n=== 7. ORDENADO POR APARICIÓN ===")
+print("7. ORDENADO POR APARICIÓN")
 lista.sort(key=lambda x: x.aparicion)
 lista.show()
 
@@ -152,7 +148,7 @@ print()
 
 # 8. Modificar nombre real de Ant Man a Scott Lang
 
-print("\n=== 8. MODIFICAR ANT-MAN ===")
+print("8. MODIFICAR ANT-MAN")
 for p in lista:
     if p.nom == "Ant Man":
         p.nom_real = "Scott Lang"
