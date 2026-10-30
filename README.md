@@ -13,3 +13,6 @@ Resolución de los ejecicios 6 y 15 de lista.
 # TP 5 - Arboles
 
 Resolución de los ejercicios 5 y 23 de arboles.
+# TP 6 - Grafos
+
+Resolución de los ejercicios 5 y 14 de grafos.
