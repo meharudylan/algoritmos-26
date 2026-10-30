@@ -220,11 +220,33 @@ def _format_path(path, distance, unit=""):
     return f"{' -> '.join(path)} ({distance}{suffix})"
 
 
+def _print_wrapped(prefix, value, width=88):
+    parts = value.split(" -> ")
+    if len(parts) == 1:
+        print(f"{prefix}{value}")
+        return
+
+    line = f"{prefix}{parts[0]}"
+    for part in parts[1:]:
+        if len(line) + len(part) + 4 <= width:
+            line += f" -> {part}"
+        else:
+            print(line)
+            line = f"{' ' * len(prefix)}-> {part}"
+    print(line)
+
+
 def _print_traversals(graph, origins):
     for origin in origins:
         print(f"  Desde {origin}:")
-        print(f"    Profundidad: {' -> '.join(depth_first_search(graph, origin))}")
-        print(f"    Amplitud:    {' -> '.join(breadth_first_search(graph, origin))}")
+        _print_wrapped(
+            "    Profundidad: ",
+            " -> ".join(depth_first_search(graph, origin)),
+        )
+        _print_wrapped(
+            "    Amplitud:    ",
+            " -> ".join(breadth_first_search(graph, origin)),
+        )
 
 
 def _print_minimum_spanning_tree(graph, unit=""):
@@ -249,29 +271,38 @@ def _nearest_route(graph, candidates, destination):
 def _print_exercise_5():
     graph = build_exercise_5()
     notebooks = ["Red Hat", "Debian", "Arch"]
+    print("=" * 88)
     print("EJERCICIO 5 - RED ORIGINAL")
-    print("  Tipo de cada equipo:")
-    for vertex in graph:
-        print(f"    {vertex.value}: {vertex.other_values}")
+    print("=" * 88)
 
-    print("  Recorridos desde las notebooks:")
+    print("\n[a] Tipos de equipos")
+    name_width = max(len(vertex.value) for vertex in graph)
+    print(f"  {'Equipo':<{name_width}} | Tipo")
+    print(f"  {'-' * name_width}-+----------")
+    for vertex in graph:
+        print(f"  {vertex.value:<{name_width}} | {vertex.other_values}")
+
+    print("\n[b] Recorridos desde las notebooks (profundidad y amplitud)")
     _print_traversals(graph, notebooks)
 
-    print("  Caminos más cortos hasta la impresora:")
+    print("\n[c] Caminos más cortos hasta la impresora")
     for origin in ["Manjaro", "Red Hat", "Fedora"]:
         path, distance = shortest_path(graph, origin, "Impresora")
-        print(f"    {origin}: {_format_path(path, distance)}")
+        print(f"  Desde {origin}:")
+        _print_wrapped("    Ruta: ", _format_path(path, distance))
 
-    print("  Árbol de expansión mínima:")
+    print("\n[d] Árbol de expansión mínima")
     _print_minimum_spanning_tree(graph)
 
     pc_candidates = [
         vertex.value for vertex in graph if vertex.other_values == "pc"
     ]
     nearest_pc = _nearest_route(graph, pc_candidates, "Guarani")
-    print(
-        "  PC (no notebook) más cercana a Guarani: "
-        f"{_format_path(nearest_pc[2], nearest_pc[0])}"
+    print("\n[e] PC (no notebook) más cercana al servidor Guarani")
+    print(f"  Equipo: {nearest_pc[1]}")
+    _print_wrapped(
+        "  Ruta: ",
+        _format_path(nearest_pc[2], nearest_pc[0]),
     )
 
     switch_1 = _get_vertex(graph, "Switch 1")
@@ -287,37 +318,63 @@ def _print_exercise_5():
         if _get_vertex(graph, name).other_values == "pc"
     ]
     nearest_pc_on_switch = _nearest_route(graph, pc_only_candidates, "MongoDB")
+
+    print("\n[f] Computadora de Switch 1 más cercana a MongoDB")
     print(
-        "  Computadora conectada a Switch 1 más cercana a MongoDB: "
-        f"{_format_path(nearest_computer[2], nearest_computer[0])}"
+        f"  Equipo: {nearest_computer[1]} "
+        f"({_get_vertex(graph, nearest_computer[1]).other_values})"
     )
-    print(
-        "  Considerando solo equipos tipo PC: "
-        f"{_format_path(nearest_pc_on_switch[2], nearest_pc_on_switch[0])}"
+    _print_wrapped(
+        "  Ruta: ",
+        _format_path(nearest_computer[2], nearest_computer[0]),
+    )
+    print("  Si se consideran solo equipos tipo PC:")
+    _print_wrapped(
+        f"    Equipo: {nearest_pc_on_switch[1]} | Ruta: ",
+        _format_path(nearest_pc_on_switch[2], nearest_pc_on_switch[0]),
     )
 
     moved_printer_graph = build_exercise_5(printer_router="Router 2")
-    print("  Recorridos luego de conectar la impresora al Router 2:")
+    print("\n[g] Recorridos al conectar la impresora al Router 2")
     _print_traversals(moved_printer_graph, notebooks)
+    print("\n[h] Tipo de grafo: no dirigido")
+    print("=" * 88)
 
 
 def _print_exercise_14():
     graph = build_exercise_14()
-    print("\nEJERCICIO 14 - AMBIENTES DE LA CASA")
-    print("  Conexiones (distancias de ejemplo en metros):")
+    print("\n" + "=" * 88)
+    print("EJERCICIO 14 - CONEXIONES DE UNA CASA")
+    print("=" * 88)
+
+    print("\n[a] Ambientes representados por los vértices")
+    for vertex in graph:
+        print(f"  - {vertex.value}")
+
+    print("\n[b] Aristas y distancias (metros)")
     for vertex in graph:
         for edge in vertex.edges:
             if vertex.value < edge.destination:
                 print(f"    {vertex.value} -- {edge.destination}: {edge.weight} m")
 
-    print("  Árbol de expansión mínima:")
+    print("\n  Cantidad de conexiones por ambiente (mínimo requerido: 3)")
+    name_width = max(len(vertex.value) for vertex in graph)
+    for vertex in graph:
+        print(f"    {vertex.value:<{name_width}} | {len(vertex.edges)} conexiones")
+
+    print("\n[c] Árbol de expansión mínima")
     _print_minimum_spanning_tree(graph, "m")
 
     path, distance = shortest_path(graph, "Habitación 1", "Sala de estar")
-    print(
-        "  Cable de red desde Habitación 1 hasta Sala de estar: "
-        f"{_format_path(path, distance, 'm')}"
+    print("\n[d] Camino más corto para el cable de red")
+    print("  Se toma Habitación 1 como ubicación del router y Sala de estar")
+    print("  como ubicación del Smart TV.")
+    _print_wrapped(
+        "  Ruta más corta: ",
+        _format_path(path, distance, "m"),
     )
+    print(f"  Cable necesario: {distance} m")
+    print("=" * 88)
 
 
 def main():
